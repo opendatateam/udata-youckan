@@ -1,0 +1,50 @@
+=============
+udata-youckan
+=============
+
+.. image:: https://secure.travis-ci.org/user/udata-youckan.png
+    :target: http://travis-ci.org/user/udata-youckan
+    :alt: Build status
+.. image:: https://coveralls.io/repos/user/udata-youckan/badge.png?branch=master
+    :target: https://coveralls.io/r/user/udata-youckan
+    :alt: Code coverage
+.. image:: https://requires.io/github/etalab/udata/requirements.png?branch=master
+    :target: https://requires.io/github/etalab/udata/requirements/?branch=master
+    :alt: Requirements Status
+
+YouCKAN Auth for uData.
+
+Compatibility
+=============
+
+udata-youckan requires Python 2.7+ and uData X.X+.
+
+
+Installation
+============
+
+You can install udata-youckan with pip:
+
+.. code-block:: console
+
+    $ pip install udata-youckan
+
+or with easy_install:
+
+.. code-block:: console
+
+    $ easy_install udata-youckan
+
+
+Configuration
+=============
+
+In order to use YouCKAN as authentication provider, you need to enable the plugin
+and add the following mandatory parameters to you uData configuration:
+
+.. code-block:: python
+
+    PLUGINS = ['youckan']
+    YOUCKAN_URL = 'https://your.youckan.url/'
+    YOUCKAN_CONSUMER_KEY = 'your-youckan-client-key',
+    YOUCKAN_CONSUMER_SECRET = 'your-youckan-secret-key'

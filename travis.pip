@@ -1,0 +1,5 @@
+-r https://raw.githubusercontent.com/etalab/udata/master/requirements/install.pip
+-r https://raw.githubusercontent.com/etalab/udata/master/requirements/test.pip
+git+https://github.com/etalab/udata.git#egg=udata
+httppretty
+coveralls

@@ -1,0 +1,3 @@
+include LICENSE MANIFEST.in README.rst CHANGELOG.rst *.pip
+
+global-exclude *~ *.egg *.pyc
