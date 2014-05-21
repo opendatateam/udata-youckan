@@ -5,8 +5,8 @@ udata-youckan
 .. image:: https://secure.travis-ci.org/user/udata-youckan.png
     :target: http://travis-ci.org/user/udata-youckan
     :alt: Build status
-.. image:: https://coveralls.io/repos/user/udata-youckan/badge.png?branch=master
-    :target: https://coveralls.io/r/user/udata-youckan
+.. image:: https://coveralls.io/repos/etalab/udata-youckan/badge.png?branch=master
+    :target: https://coveralls.io/r/etalab/udata-youckan
     :alt: Code coverage
 .. image:: https://requires.io/github/etalab/udata-youckan/requirements.png?branch=master
     :target: https://requires.io/github/etalab/udata-youckan/requirements/?branch=master
