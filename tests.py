@@ -179,6 +179,7 @@ class YouckanTest(FrontTestCase):
         self.assertEqual(len(User.objects), 1)
 
     def test_redirect_authenticated_users_to_https(self):
+        '''Should force connected usr on https'''
         self.login()
         response = self.get('/somewhere')
         self.assertStatus(response, 302)
@@ -216,7 +217,7 @@ class YouckanTest(FrontTestCase):
         self.assertRedirects(response, next_url)
 
     def test_force_logout_if_cookie_is_missing(self):
-        '''Should silently idsonnect user if YouCKAN cookie is missing'''
+        '''Should silently disconnect user if YouCKAN cookie is missing'''
         with self.app.test_client() as client:
             self.login(client=client)
 

@@ -3,6 +3,9 @@ python:
   - 2.7
 services:
   - mongodb
+before_install:
+  - sudo /usr/share/elasticsearch/bin/plugin -install elasticsearch/elasticsearch-analysis-icu/2.0.0
+  - sudo service elasticsearch start
 install:
   - pip install -r travis.pip --allow-external webassets --allow-unverified webassets
   - pip install -e .
