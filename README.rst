@@ -8,8 +8,8 @@ udata-youckan
 .. image:: https://coveralls.io/repos/user/udata-youckan/badge.png?branch=master
     :target: https://coveralls.io/r/user/udata-youckan
     :alt: Code coverage
-.. image:: https://requires.io/github/etalab/udata/requirements.png?branch=master
-    :target: https://requires.io/github/etalab/udata/requirements/?branch=master
+.. image:: https://requires.io/github/etalab/udata-youckan/requirements.png?branch=master
+    :target: https://requires.io/github/etalab/udata-youckan/requirements/?branch=master
     :alt: Requirements Status
 
 YouCKAN Auth for uData.
