@@ -7,6 +7,6 @@ install:
   - pip install -r travis.pip --allow-external webassets --allow-unverified webassets
   - pip install -e .
 script:
-  - nosetests --with-coverage udata_youckan
+  - nosetests --with-coverage
 after_success:
   - coveralls --rcfile=coverage.rc
