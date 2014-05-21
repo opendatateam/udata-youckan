@@ -2,8 +2,8 @@
 udata-youckan
 =============
 
-.. image:: https://secure.travis-ci.org/user/udata-youckan.png
-    :target: http://travis-ci.org/user/udata-youckan
+.. image:: https://travis-ci.org/etalab/udata-youckan.svg?branch=master
+    :target: http://travis-ci.org/etalab/udata-youckan
     :alt: Build status
 .. image:: https://coveralls.io/repos/etalab/udata-youckan/badge.png?branch=master
     :target: https://coveralls.io/r/etalab/udata-youckan
