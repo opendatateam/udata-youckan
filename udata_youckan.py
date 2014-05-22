@@ -58,8 +58,11 @@ def check_youckan_cookie():
         return redirect(request.url.replace('http://', 'https://'))
 
     # Force session open and close depending on the youckan session state
-    if 'youckan.session' in request.cookies and 'youckan.auth' in request.cookies:
-        session_id = request.cookies['youckan.session']
+    session_cookie_name = current_app.config['YOUCKAN_SESSION_COOKIE']
+    logged_cookie_name = '{0}.logged'.format(current_app.config['YOUCKAN_AUTH_COOKIE'])
+
+    if session_cookie_name in request.cookies and logged_cookie_name in request.cookies:
+        session_id = request.cookies[session_cookie_name]
 
         if not current_user.is_authenticated() or not 'youckan.token' in session:
             return youckan.authorize(
@@ -141,6 +144,8 @@ def init_app(app):
 
     youckan_url = app.config.get('YOUCKAN_URL')
 
+    app.config.setdefault('YOUCKAN_SESSION_COOKIE', 'youckan.session')
+    app.config.setdefault('YOUCKAN_AUTH_COOKIE', 'youckan.auth')
     app.config.setdefault('YOUCKAN_BASE_URL', urljoin(youckan_url, '/api/'))
     app.config.setdefault('YOUCKAN_ACCESS_TOKEN_URL', urljoin(youckan_url, '/oauth2/token/'))
     app.config.setdefault('YOUCKAN_AUTHORIZE_URL', urljoin(youckan_url, '/oauth2/authorize/'))

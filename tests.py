@@ -28,6 +28,8 @@ class YouckanSettings(Testing):
     YOUCKAN_URL = 'https://youckan/'
     YOUCKAN_CONSUMER_KEY = 'key',
     YOUCKAN_CONSUMER_SECRET = 'secret'
+    YOUCKAN_AUTH_COOKIE = 'youckan.test.auth'
+    YOUCKAN_SESSION_COOKIE = 'youckan.test.session'
 
 
 def youckan_api_response(**kwargs):
@@ -189,8 +191,9 @@ class YouckanTest(FrontTestCase):
         '''Should trigger a OAuth handshake if YouCKAN cookie is present'''
         with self.app.test_client() as client:
             self.assertFalse(current_user.is_authenticated())
-            client.set_cookie('udata.dev', 'youckan.session', 'session_id')
-            client.set_cookie('udata.dev', 'youckan.auth', 'whatever')
+            client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_SESSION_COOKIE, 'session_id')
+            client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_AUTH_COOKIE, 'whatever')
+            client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_AUTH_COOKIE + '.logged', 'whatever')
             response = self.get('/somewhere', client=client)
 
         self.assertStatus(response, 302)
