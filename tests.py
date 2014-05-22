@@ -94,7 +94,8 @@ class YouckanTest(FrontTestCase):
     def test_login_redirect_to_youckan(self):
         '''Login should redirect to youckan login'''
         next_url = 'http://someurl/'
-        response = self.get(url_for('security.login', next=next_url))
+        message = 'You should log in'
+        response = self.get(url_for('security.login', next=next_url, message=message))
 
         self.assertStatus(response, 302)
 
@@ -104,6 +105,7 @@ class YouckanTest(FrontTestCase):
         self.assertEqual(response_url.hostname, expected_url.hostname)
         self.assertEqual(response_url.path, expected_url.path)
         self.assertEqual(qs['next'][0], next_url)
+        self.assertEqual(qs['message'][0], message)
 
     def test_logout_redirect_to_youckan(self):
         '''Logout should trigger a YouCKAN logout'''

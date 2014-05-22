@@ -77,8 +77,13 @@ def check_youckan_cookie():
 def login():
     '''Redirect user to YouCKAN'''
     url = urljoin(current_app.config['YOUCKAN_URL'], 'login')
+    params = {}
     if 'next' in request.args:
-        url += '?' + urlencode({'next': request.args['next']})
+        params['next'] = request.args['next']
+    if 'message' in request.args:
+        params['message'] = request.args['message']
+    if params:
+        url += '?' + urlencode(params)
     return redirect(url)
 
 
