@@ -136,6 +136,28 @@ class YouckanTest(FrontTestCase):
         self.assertEqual(len(User.objects), 1)
 
     @httpretty.activate
+    def test_update_user_on_authorize_callback(self):
+        '''Should only update specific field on authorize callback'''
+        user = UserFactory()
+
+        old_slug = user.slug
+
+        with self.mock_authorize(slug=user.slug, is_superuser=True) as (profile, client):
+            response = self.get(url_for('youckan.authorized', code='code'), client=client)
+            self.assertRedirects(response, url_for('front.home'))
+            self.assertIn('youckan.token', session)
+            self.assertTrue(current_user.is_authenticated())
+
+            user.reload()
+            self.assertEqual(user.slug, old_slug)
+            self.assertEqual(user.first_name, profile['first_name'])
+            self.assertEqual(user.last_name, profile['last_name'])
+            self.assertEqual(user.email, profile['email'])
+            self.assertEqual(user.avatar_url, profile['profile']['avatar'])
+
+        self.assertEqual(len(User.objects), 1)
+
+    @httpretty.activate
     def test_log_admin_user_on_authorize_callback(self):
         '''Should log the user with the admin role in on authorize callback'''
         user = UserFactory()
