@@ -22,7 +22,6 @@ from udata_youckan import init_app, encode_state, decode_state
 
 
 class YouckanSettings(Testing):
-    # SERVER_NAME = 'udata.dev'
     TEST_WITH_PLUGINS = True
     PLUGINS = ['youckan']
     YOUCKAN_URL = 'https://youckan/'
@@ -105,6 +104,22 @@ class YouckanTest(FrontTestCase):
         self.assertEqual(response_url.hostname, expected_url.hostname)
         self.assertEqual(response_url.path, expected_url.path)
         self.assertEqual(qs['next'][0], next_url)
+        self.assertEqual(qs['message'][0], message)
+
+    def test_login_redirect_to_youckan_with_unicode(self):
+        '''Login should redirect to youckan login and support unicode'''
+        next_url = 'http://someurl/é€'
+        message = 'You should log in'
+        response = self.get(url_for('security.login', next=next_url, message=message))
+
+        self.assertStatus(response, 302)
+
+        response_url = urlparse(response.location)
+        qs = parse_qs(response_url.query)
+        expected_url = urlparse(YouckanSettings.YOUCKAN_URL + 'login')
+        self.assertEqual(response_url.hostname, expected_url.hostname)
+        self.assertEqual(response_url.path, expected_url.path)
+        self.assertEqual(qs['next'][0].decode('utf-8'), next_url)
         self.assertEqual(qs['message'][0], message)
 
     def test_logout_redirect_to_youckan(self):

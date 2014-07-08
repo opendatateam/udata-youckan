@@ -6,15 +6,17 @@ import logging
 import time
 
 from base64 import b64decode, b64encode
-from urllib import urlencode
 from urlparse import urljoin
 
 from flask import Blueprint, request, current_app, redirect, session, url_for, abort
 from flask.ext.oauthlib.client import OAuth, OAuthException
 from flask.ext.security.utils import login_user, logout_user
 
+from werkzeug.urls import url_encode
+
 from udata.auth import current_user
 from udata.models import datastore
+from udata.commands import manager
 
 log = logging.getLogger(__name__)
 
@@ -83,7 +85,7 @@ def login():
     if 'message' in request.args:
         params['message'] = request.args['message']
     if params:
-        url += '?' + urlencode(params)
+        url += '?' + url_encode(params)
     return redirect(url)
 
 
@@ -131,6 +133,7 @@ def authorized(resp):
     if not user.is_active() and data['is_active']:
         user.active = True
 
+    user.save()
     login_user(user)
 
     redirect_to = url_for('front.home')
@@ -168,3 +171,11 @@ def init_app(app):
     # Hijack Flask-Security URL: must find a better way
     app.view_functions['security.login'] = login
     app.view_functions['security.logout'] = logout
+
+
+@manager.command
+def update_youckan_users():
+    '''Update youckan users by their slug'''
+    # if not 'YOUCKAN_ADMIN' in manager.app.config:
+    #     raise ValueError('YOUCKAN_ADMIN should be defined')
+    print youckan.get('users')
