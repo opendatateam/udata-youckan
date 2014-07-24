@@ -114,17 +114,17 @@ def authorized(resp):
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
-            avatar_url=data['profile'].get('avatar'),
-            website=data['profile'].get('website'),
-            about=data['profile'].get('about')
+            avatar_url=data['profile'].get('avatar') or None,
+            website=data['profile'].get('website') or None,
+            about=data['profile'].get('about') or None
         )
     else:
         user.first_name = data['first_name']
         user.last_name = data['last_name']
         user.email = data['email']
-        user.avatar_url = data['profile']['avatar']
-        user.website = data['profile']['website']
-        user.about = data['profile']['about']
+        user.avatar_url = data['profile'].get('avatar') or None
+        user.website = data['profile'].get('website') or None
+        user.about = data['profile'].get('about') or None
 
     admin_role = datastore.find_or_create_role('admin')
     if data['is_superuser'] and not user.has_role(admin_role):
