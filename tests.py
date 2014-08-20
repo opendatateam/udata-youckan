@@ -10,7 +10,7 @@ from urlparse import urlparse, parse_qs
 
 import httpretty
 
-from flask import url_for, session
+from flask import url_for, session, current_app
 
 from udata.auth import current_user
 from udata.models import User
@@ -65,6 +65,7 @@ class YouckanTest(FrontTestCase):
 
     def create_app(self):
         app = super(YouckanTest, self).create_app()
+        app.config.from_object(self.settings)
         init_app(app)
         return app
 
@@ -121,6 +122,34 @@ class YouckanTest(FrontTestCase):
         self.assertEqual(response_url.path, expected_url.path)
         self.assertEqual(qs['next'][0].decode('utf-8'), next_url)
         self.assertEqual(qs['message'][0], message)
+
+    def test_login_redirect_to_youckan_with_path_only(self):
+        '''Login should redirect to youckan login and support unicode'''
+        next_url = '/é€'
+        message = 'You should log in'
+        response = self.get(url_for('security.login', next=next_url, message=message))
+
+        self.assertStatus(response, 302)
+
+        response_url = urlparse(response.location)
+        qs = parse_qs(response_url.query)
+        expected_url = urlparse(YouckanSettings.YOUCKAN_URL + 'login')
+        self.assertEqual(response_url.hostname, expected_url.hostname)
+        self.assertEqual(response_url.path, expected_url.path)
+        self.assertEqual(qs['next'][0].decode('utf-8'), 'https://localhost' + next_url)
+        self.assertEqual(qs['message'][0], message)
+
+    def test_login_required_redirect_to_youckan(self):
+        '''Login required decorator should redirect to youckan login'''
+        @self.app.route('/test-login-required/')
+        def test_login_required():
+            return current_app.login_manager.unauthorized()  # Simulate the login required decorator
+
+        url = url_for('test_login_required')
+        response = self.get(url)
+
+        self.assertStatus(response, 302)
+        self.assertEqual(response.location, url_for('security.login', _external=True, next=url))
 
     def test_logout_redirect_to_youckan(self):
         '''Logout should trigger a YouCKAN logout'''

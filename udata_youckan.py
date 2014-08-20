@@ -81,7 +81,10 @@ def login():
     url = urljoin(current_app.config['YOUCKAN_URL'], 'login')
     params = {}
     if 'next' in request.args:
-        params['next'] = request.args['next']
+        next_url = request.args['next']
+        if not next_url.startswith('http'):
+            next_url = ''.join(['https://', current_app.config['SERVER_NAME'], next_url])
+        params['next'] = next_url
     if 'message' in request.args:
         params['message'] = request.args['message']
     if params:
