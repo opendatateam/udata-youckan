@@ -150,6 +150,7 @@ class YouckanTest(FrontTestCase):
 
         self.assertStatus(response, 302)
         self.assertEqual(response.location, url_for('security.login', _external=True, next=url))
+        self.assert_not_flash()
 
     def test_logout_redirect_to_youckan(self):
         '''Logout should trigger a YouCKAN logout'''

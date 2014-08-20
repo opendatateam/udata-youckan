@@ -175,6 +175,9 @@ def init_app(app):
     app.view_functions['security.login'] = login
     app.view_functions['security.logout'] = logout
 
+    # Hijack Flask-Login flash message
+    app.login_manager.login_message = None
+
 
 @manager.command
 def update_youckan_users():
