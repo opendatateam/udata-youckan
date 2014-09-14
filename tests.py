@@ -174,7 +174,7 @@ class YouckanTest(FrontTestCase):
 
         with self.mock_authorize(slug=user.slug) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
-            self.assertRedirects(response, url_for('front.home'))
+            self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
             self.assertTrue(current_user.is_authenticated())
 
@@ -189,7 +189,7 @@ class YouckanTest(FrontTestCase):
 
         with self.mock_authorize(slug=user.slug, is_superuser=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
-            self.assertRedirects(response, url_for('front.home'))
+            self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
             self.assertTrue(current_user.is_authenticated())
 
@@ -209,7 +209,7 @@ class YouckanTest(FrontTestCase):
 
         with self.mock_authorize(slug=user.slug, is_superuser=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
-            self.assertRedirects(response, url_for('front.home'))
+            self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
             self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.has_role('admin'))
@@ -223,7 +223,7 @@ class YouckanTest(FrontTestCase):
 
         with self.mock_authorize(slug=user.slug, is_active=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
-            self.assertRedirects(response, url_for('front.home'))
+            self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
             self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.is_active())
@@ -236,7 +236,7 @@ class YouckanTest(FrontTestCase):
         with self.mock_authorize() as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
 
-            self.assertRedirects(response, url_for('front.home'))
+            self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
             self.assertTrue(current_user.is_authenticated())
             self.assertTrue(current_user.is_active())
@@ -293,6 +293,6 @@ class YouckanTest(FrontTestCase):
         with self.app.test_client() as client:
             self.login(client=client)
 
-            response = self.get(url_for('front.home'), base_url='https://localhost', client=client)
+            response = self.get(url_for('site.home'), base_url='https://localhost', client=client)
             self.assert200(response)
             self.assertFalse(current_user.is_authenticated())

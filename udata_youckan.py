@@ -139,7 +139,7 @@ def authorized(resp):
     user.save()
     login_user(user)
 
-    redirect_to = url_for('front.home')
+    redirect_to = url_for('site.home')
     if 'state' in request.args:
         state = request.args.get('state')
         decoded_state = json.loads(b64decode(state))
