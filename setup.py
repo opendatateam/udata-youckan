@@ -58,7 +58,7 @@ tests_require = pip('requirements-test.pip')
 
 setup(
     name='udata-youckan',
-    version='0.1',
+    version='0.1.0.dev',
     description='YouCKAN auth for uData',
     long_description=long_description,
     url='https://github.com/etalab/udata-youckan',

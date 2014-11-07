@@ -55,10 +55,6 @@ def check_youckan_cookie():
     if request.endpoint == 'youckan.authorized':
         return
 
-    # Force authenticated users to use https
-    if current_user.is_authenticated() and not request.is_secure:
-        return redirect(request.url.replace('http://', 'https://'))
-
     # Force session open and close depending on the youckan session state
     session_cookie_name = current_app.config['YOUCKAN_SESSION_COOKIE']
     logged_cookie_name = '{0}.logged'.format(current_app.config['YOUCKAN_AUTH_COOKIE'])
@@ -100,8 +96,8 @@ def logout():
 
 
 @bp.route('/youckan/authorized')
-@youckan.authorized_handler
-def authorized(resp):
+def authorized():
+    resp = youckan.authorized_response()
     if resp is None or isinstance(resp, OAuthException):
         # TODO: better error handling
         abort(403)

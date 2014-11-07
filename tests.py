@@ -249,13 +249,6 @@ class YouckanTest(FrontTestCase):
 
         self.assertEqual(len(User.objects), 1)
 
-    def test_redirect_authenticated_users_to_https(self):
-        '''Should force connected usr on https'''
-        self.login()
-        response = self.get('/somewhere')
-        self.assertStatus(response, 302)
-        self.assertEqual(response.location, 'https://localhost/somewhere')
-
     def test_trigger_oauth_login_on_cookie(self):
         '''Should trigger a OAuth handshake if YouCKAN cookie is present'''
         with self.app.test_client() as client:
@@ -293,6 +286,6 @@ class YouckanTest(FrontTestCase):
         with self.app.test_client() as client:
             self.login(client=client)
 
-            response = self.get(url_for('site.home'), base_url='https://localhost', client=client)
+            response = self.get(url_for('site.dashboard'), base_url='https://localhost', client=client)
             self.assert200(response)
             self.assertFalse(current_user.is_authenticated())
