@@ -54,7 +54,6 @@ long_description = '\n'.join((
 ))
 
 install_requires = pip('requirements.pip')
-tests_require = pip('requirements-test.pip')
 
 setup(
     name='udata-youckan',
@@ -68,10 +67,6 @@ setup(
     py_modules=['udata_youckan'],
     include_package_data=True,
     install_requires=install_requires,
-    tests_require=tests_require,
-    extras_require={
-        'test': tests_require,
-    },
     license='AGPL',
     use_2to3=True,
     keywords='',
