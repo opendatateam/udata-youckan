@@ -65,7 +65,6 @@ class YouckanTest(FrontTestCase):
 
     def create_app(self):
         app = super(YouckanTest, self).create_app()
-        app.config.from_object(self.settings)
         init_app(app)
         return app
 
