@@ -62,13 +62,13 @@ def check_youckan_cookie():
     if session_cookie_name in request.cookies and logged_cookie_name in request.cookies:
         session_id = request.cookies[session_cookie_name]
 
-        if not current_user.is_authenticated() or not 'youckan.token' in session:
+        if not current_user.is_authenticated or not 'youckan.token' in session:
             return youckan.authorize(
                 callback=url_for('youckan.authorized', _external=True, _scheme='https'),
                 state=encode_state(session_id),
                 next=request.url.replace('http://', 'https://')
             )
-    elif current_user.is_authenticated():
+    elif current_user.is_authenticated:
         logout_user()
 
 
@@ -129,7 +129,7 @@ def authorized():
     if data['is_superuser'] and not user.has_role(admin_role):
         datastore.add_role_to_user(user, admin_role)
 
-    if not user.is_active() and data['is_active']:
+    if not user.is_active and data['is_active']:
         user.active = True
 
     user.save()

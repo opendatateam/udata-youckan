@@ -159,7 +159,7 @@ class YouckanTest(FrontTestCase):
             response = self.get(url_for('security.logout'), base_url='https://localhost', client=client)
 
             self.assertStatus(response, 302)
-            self.assertFalse(current_user.is_authenticated())
+            self.assertFalse(current_user.is_authenticated)
 
             expected_url = urlparse(YouckanSettings.YOUCKAN_URL + 'logout')
             response_url = urlparse(response.location)
@@ -175,7 +175,7 @@ class YouckanTest(FrontTestCase):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
-            self.assertTrue(current_user.is_authenticated())
+            self.assertTrue(current_user.is_authenticated)
 
         self.assertEqual(len(User.objects), 1)
 
@@ -190,7 +190,7 @@ class YouckanTest(FrontTestCase):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
-            self.assertTrue(current_user.is_authenticated())
+            self.assertTrue(current_user.is_authenticated)
 
             user.reload()
             self.assertEqual(user.slug, old_slug)
@@ -210,7 +210,7 @@ class YouckanTest(FrontTestCase):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
-            self.assertTrue(current_user.is_authenticated())
+            self.assertTrue(current_user.is_authenticated)
             self.assertTrue(current_user.has_role('admin'))
 
         self.assertEqual(len(User.objects), 1)
@@ -224,8 +224,8 @@ class YouckanTest(FrontTestCase):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
-            self.assertTrue(current_user.is_authenticated())
-            self.assertTrue(current_user.is_active())
+            self.assertTrue(current_user.is_authenticated)
+            self.assertTrue(current_user.is_active)
 
         self.assertEqual(len(User.objects), 1)
 
@@ -237,8 +237,8 @@ class YouckanTest(FrontTestCase):
 
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
-            self.assertTrue(current_user.is_authenticated())
-            self.assertTrue(current_user.is_active())
+            self.assertTrue(current_user.is_authenticated)
+            self.assertTrue(current_user.is_active)
             self.assertEqual(current_user.slug, profile['slug'])
             self.assertEqual(current_user.first_name, profile['first_name'])
             self.assertEqual(current_user.last_name, profile['last_name'])
@@ -251,7 +251,7 @@ class YouckanTest(FrontTestCase):
     def test_trigger_oauth_login_on_cookie(self):
         '''Should trigger a OAuth handshake if YouCKAN cookie is present'''
         with self.app.test_client() as client:
-            self.assertFalse(current_user.is_authenticated())
+            self.assertFalse(current_user.is_authenticated)
             client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_SESSION_COOKIE, 'session_id')
             client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_AUTH_COOKIE, 'whatever')
             client.set_cookie('udata.dev', YouckanSettings.YOUCKAN_AUTH_COOKIE + '.logged', 'whatever')
@@ -287,4 +287,4 @@ class YouckanTest(FrontTestCase):
 
             response = self.get(url_for('site.dashboard'), base_url='https://localhost', client=client)
             self.assert200(response)
-            self.assertFalse(current_user.is_authenticated())
+            self.assertFalse(current_user.is_authenticated)
