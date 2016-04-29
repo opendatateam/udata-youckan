@@ -15,7 +15,7 @@ from flask import url_for, session, current_app
 from udata.auth import current_user
 from udata.models import User
 from udata.settings import Testing
-from udata.tests.factories import UserFactory
+from udata.core.user.factories import UserFactory
 from udata.tests.frontend import FrontTestCase
 from udata.utils import faker
 
