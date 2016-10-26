@@ -1,5 +1,5 @@
 uData-youckan
-===========
+=============
 
 [![Build status][circleci-badge]][circleci-url]
 [![Join the chat at https://gitter.im/opendatateam/udata][gitter-badge]][gitter-url]
