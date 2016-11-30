@@ -9,8 +9,8 @@ from base64 import b64decode, b64encode
 from urlparse import urljoin
 
 from flask import Blueprint, request, current_app, redirect, session, url_for, abort
-from flask.ext.oauthlib.client import OAuth, OAuthException
-from flask.ext.security.utils import login_user, logout_user
+from flask_oauthlib.client import OAuth, OAuthException
+from flask_security.utils import login_user, logout_user
 
 from werkzeug.urls import url_encode
 
