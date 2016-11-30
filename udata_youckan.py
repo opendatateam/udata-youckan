@@ -113,6 +113,7 @@ def authorized():
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
+            active=data['is_active'],
             avatar_url=data['profile'].get('avatar') or None,
             website=data['profile'].get('website') or None,
             about=data['profile'].get('about') or None
@@ -121,6 +122,7 @@ def authorized():
         user.first_name = data['first_name']
         user.last_name = data['last_name']
         user.email = data['email']
+        user.active = data['is_active']
         user.avatar_url = data['profile'].get('avatar') or None
         user.website = data['profile'].get('website') or None
         user.about = data['profile'].get('about') or None
@@ -128,9 +130,6 @@ def authorized():
     admin_role = datastore.find_or_create_role('admin')
     if data['is_superuser'] and not user.has_role(admin_role):
         datastore.add_role_to_user(user, admin_role)
-
-    if not user.is_active and data['is_active']:
-        user.active = True
 
     user.save()
     login_user(user)
