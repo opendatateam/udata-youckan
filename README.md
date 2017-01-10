@@ -1,19 +1,16 @@
-uData-youckan
-=============
+# uData-youckan
 
 [![Build status][circleci-badge]][circleci-url]
 [![Join the chat at https://gitter.im/opendatateam/udata][gitter-badge]][gitter-url]
 
 This plugin provide integration between [uData][] and [YouCKAN][]
 
-Compatibility
--------------
+## Compatibility
 
 **udata-youckan** requires Python 2.7+ and [uData][].
 
 
-Installation
-------------
+## Installation
 
 Install [uData][].
 
@@ -25,8 +22,7 @@ Install **udata-youckan**:
 pip install udata-youckan
 ```
 
-Configuration
--------------
+## Configuration
 
 In order to use YouCKAN as authentication provider, you need to enable the plugin
 and add the following mandatory parameters to you uData configuration
