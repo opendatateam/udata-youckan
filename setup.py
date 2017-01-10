@@ -83,7 +83,7 @@ long_description = '\n'.join((
 
 setup(
     name='udata-youckan',
-    version='0.9.1',
+    version='0.9.2.dev',
     description='YouCKAN auth for uData',
     long_description=long_description,
     url='https://github.com/etalab/udata-youckan',
