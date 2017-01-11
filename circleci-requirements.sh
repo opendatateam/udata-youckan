@@ -13,5 +13,5 @@ elif [[ $CIRCLE_TAG ]]; then
 else
   BASE_BRANCH=$CIRCLE_BRANCH
 fi
-pip install -r circleci.$BASE_BRANCH.pip
+pip install -U -r circleci.$BASE_BRANCH.pip
 pip install -e .
