@@ -13,5 +13,11 @@ elif [[ $CIRCLE_TAG ]]; then
 else
   BASE_BRANCH=$CIRCLE_BRANCH
 fi
-pip install -U -r circleci.$BASE_BRANCH.pip
-pip install -e .
+if [[ $BASE_BRANCH == "dev" ]]; then
+    # Test against last published  pre version
+    pip install -U --pre udata[test]
+else
+    # Test against last published stable version
+    pip install -U udata[test]
+fi
+pip install -e . invoke
