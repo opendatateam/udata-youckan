@@ -9,8 +9,8 @@ from base64 import b64decode, b64encode
 from urlparse import urljoin
 
 from flask import Blueprint, request, current_app, redirect, session, url_for, abort
-from flask.ext.oauthlib.client import OAuth, OAuthException
-from flask.ext.security.utils import login_user, logout_user
+from flask_oauthlib.client import OAuth, OAuthException
+from flask_security.utils import login_user, logout_user
 
 from werkzeug.urls import url_encode
 
@@ -62,7 +62,7 @@ def check_youckan_cookie():
     if session_cookie_name in request.cookies and logged_cookie_name in request.cookies:
         session_id = request.cookies[session_cookie_name]
 
-        if not current_user.is_authenticated or not 'youckan.token' in session:
+        if not current_user.is_authenticated or 'youckan.token' not in session:
             return youckan.authorize(
                 callback=url_for('youckan.authorized', _external=True, _scheme='https'),
                 state=encode_state(session_id),
@@ -106,13 +106,14 @@ def authorized():
     response = youckan.get('me')
     data = response.data
 
-    user = datastore.find_user(slug=data['slug'])  # TODO: use user id instead
+    user = datastore.find_user(email=data['email'])
     if not user:
         user = datastore.create_user(
             slug=data['slug'],
             first_name=data['first_name'],
             last_name=data['last_name'],
             email=data['email'],
+            active=data['is_active'],
             avatar_url=data['profile'].get('avatar') or None,
             website=data['profile'].get('website') or None,
             about=data['profile'].get('about') or None
@@ -120,7 +121,7 @@ def authorized():
     else:
         user.first_name = data['first_name']
         user.last_name = data['last_name']
-        user.email = data['email']
+        user.active = data['is_active']
         user.avatar_url = data['profile'].get('avatar') or None
         user.website = data['profile'].get('website') or None
         user.about = data['profile'].get('about') or None
@@ -128,9 +129,6 @@ def authorized():
     admin_role = datastore.find_or_create_role('admin')
     if data['is_superuser'] and not user.has_role(admin_role):
         datastore.add_role_to_user(user, admin_role)
-
-    if not user.is_active and data['is_active']:
-        user.active = True
 
     user.save()
     login_user(user)
@@ -149,7 +147,7 @@ def get_youckan_oauth_token():
 
 
 def init_app(app):
-    if not 'YOUCKAN_URL' in app.config:
+    if 'YOUCKAN_URL' not in app.config:
         raise ValueError('YOUCKAN_URL parameter is mandatory')
     elif 'YOUCKAN_CONSUMER_KEY' not in app.config:
         raise ValueError('YOUCKAN_CONSUMER_KEY parameter is mandatory')

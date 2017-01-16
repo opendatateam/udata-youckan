@@ -15,8 +15,9 @@ from flask import url_for, session, current_app
 from udata.auth import current_user
 from udata.models import User
 from udata.settings import Testing
-from udata.tests.factories import UserFactory, faker
+from udata.core.user.factories import UserFactory
 from udata.tests.frontend import FrontTestCase
+from udata.utils import faker
 
 from udata_youckan import init_app, encode_state, decode_state
 
@@ -171,7 +172,7 @@ class YouckanTest(FrontTestCase):
         '''Should log the user in on authorize callback'''
         user = UserFactory()
 
-        with self.mock_authorize(slug=user.slug) as (profile, client):
+        with self.mock_authorize(email=user.email) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
@@ -186,7 +187,7 @@ class YouckanTest(FrontTestCase):
 
         old_slug = user.slug
 
-        with self.mock_authorize(slug=user.slug, is_superuser=True) as (profile, client):
+        with self.mock_authorize(email=user.email, is_superuser=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
@@ -206,7 +207,7 @@ class YouckanTest(FrontTestCase):
         '''Should log the user with the admin role in on authorize callback'''
         user = UserFactory()
 
-        with self.mock_authorize(slug=user.slug, is_superuser=True) as (profile, client):
+        with self.mock_authorize(email=user.email, is_superuser=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
@@ -220,7 +221,7 @@ class YouckanTest(FrontTestCase):
         '''Should log the user with the admin role in on authorize callback'''
         user = UserFactory(active=False)
 
-        with self.mock_authorize(slug=user.slug, is_active=True) as (profile, client):
+        with self.mock_authorize(email=user.email, is_active=True) as (profile, client):
             response = self.get(url_for('youckan.authorized', code='code'), client=client)
             self.assertRedirects(response, url_for('site.home'))
             self.assertIn('youckan.token', session)
