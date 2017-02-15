@@ -1,5 +1,9 @@
 # Changelog
 
+## Current (in progress)
+
+- Nothing yet
+
 ## 1.0.0 (2017-02-16)
 
 - Use email to fetch user instead of slug ([#7](https://github.com/opendatateam/udata-youckan/pull/7))
